@@ -5,29 +5,28 @@
 
 @section('content')
     @if (session('success'))
-        <div class="success-message">{{ session('success') }}</div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    {{-- {{ dd($friendRequest) }} --}}
     <div class="container">
         <div class="row">
             @foreach ($friendRequest as $user)
                 <div class="col-md-4 mb-4">
-                    <div class="card" style="width: 100%;">
-                        <img src="{{ asset('storage/' . $user->profile_path) }}" alt="" srcset=""
-                            style="width: 25rem; height: 25rem;">
-                        <div class="card-body">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ asset('storage/' . $user->profile_path) }}" alt="{{ $user->name }}'s profile"
+                            class="card-img-top img-fluid" style="object-fit: cover; height: 250px;">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{ $user->name }}</h5>
                             <p class="card-text">{{ $user->fields_of_work }}</p>
-                            <form method="POST" action="{{ route('friend.store') }}">
+                            <form method="POST" action="{{ route('friend.store') }}" class="mb-2">
                                 @csrf
                                 <input type="hidden" name="request_id" value="{{ $user->request_id }}">
                                 <input type="hidden" name="friend_id" value="{{ $user->id }}">
-                                <button type="submit" class="button btn-primary">Accept</button>
+                                <button type="submit" class="btn btn-primary w-100">Accept</button>
                             </form>
                             <form method="POST" action="{{ route('friend-request.destroy', $user->request_id) }}">
                                 @method('delete')
                                 @csrf
-                                <button type="submit" class="button btn-danger">Decline</button>
+                                <button type="submit" class="btn btn-danger w-100">Decline</button>
                             </form>
                         </div>
                     </div>

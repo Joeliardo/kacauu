@@ -30,8 +30,24 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $senderID = Auth::user()->id;
+        $receiverID = $request->input('friend_id');
+
+        // Validate the input
+        $request->validate([
+            'new_message' => 'required|string|max:255',
+        ]);
+
+        // Create and save the new message
+        Message::create([
+            'sender_id' => $senderID,
+            'receiver_id' => $receiverID,
+            'message' => $request->input('new_message'),
+        ]);
+
+        return redirect()->route('message.show', $receiverID);
     }
+
 
     /**
      * Display the specified resource.
@@ -39,12 +55,20 @@ class MessageController extends Controller
     public function show(string $id)
     {
         $currentUserID = Auth::user()->id;
+        $friend = User::findOrFail($id);
 
-        $friend = User::find($id);
-        $messages = Message::where('receiver_id', '=', $currentUserID)->where('sender_id', '=', $id)->join('users', 'users.id', '=', 'sender_id')->get();
+        // Retrieve all messages between the current user and the friend
+        $messages = Message::where(function ($query) use ($currentUserID, $id) {
+            $query->where('sender_id', $currentUserID)
+                ->where('receiver_id', $id);
+        })->orWhere(function ($query) use ($currentUserID, $id) {
+            $query->where('sender_id', $id)
+                ->where('receiver_id', $currentUserID);
+        })->orderBy('created_at', 'asc')->get();
 
         return view('message', compact('friend', 'messages'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

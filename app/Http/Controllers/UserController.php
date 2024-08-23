@@ -12,33 +12,35 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $currentUserID = Auth::user()->id;
+
+        // Get the search term from the request
+        $searchTerm = $request->input('search');
 
         // Subquery to get the list of users who have sent a request to the current user
         $sentRequestUserIDs = DB::table('friend_requests')
             ->where('sender_id', '=', $currentUserID)
             ->pluck('receiver_id');
 
-        // Subquery to get the list of users who have sent is already friends
+        // Subquery to get the list of users who are already friends with the current user
         $friendUserIDs = DB::table('friends')
             ->where('user_id', '=', $currentUserID)
             ->pluck('friend_id');
 
         // Query to get users who have not sent a friend request to the current user
-        $dataUser = User::join('friend_requests', 'users.id', '=', 'friend_requests.sender_id')
-            ->where('friend_requests.receiver_id', '!=', $currentUserID)
-            ->whereNotIn('users.id', $sentRequestUserIDs)
-            ->join('friends', 'users.id', '=', 'friends.friend_id')
-            ->whereNotIn('users.id', $friendUserIDs)
-            ->where('users.id', '!=', $currentUserID)
-            ->get(['users.*']);
-
-        // dd($dataUser);
+        $dataUser = User::whereNotIn('id', $sentRequestUserIDs)
+            ->whereNotIn('id', $friendUserIDs)
+            ->where('id', '!=', $currentUserID)
+            ->when($searchTerm, function ($query, $searchTerm) {
+                return $query->where('name', 'like', '%' . $searchTerm . '%');
+            })
+            ->get();
 
         return view('home', compact('dataUser'));
     }
+
 
     /**
      * Show the form for creating a new resource.

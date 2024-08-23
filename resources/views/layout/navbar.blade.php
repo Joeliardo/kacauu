@@ -10,10 +10,10 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="{{ route('user.index') }}">Job Friend</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -25,30 +25,30 @@
                         <a class="nav-link @yield('activeHome')" href="{{ route('user.index') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('friend-request.index') }}">Request</a>
+                        <a class="nav-link @yield('activeRequest')" href="{{ route('friend-request.index') }}">Requests</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('friend.index') }}">Friend</a>
+                        <a class="nav-link @yield('activeFriend')" href="{{ route('friend.index') }}">Friends</a>
                     </li>
                 </ul>
-                {{-- <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> --}}
                 @if (Auth::check())
-                    <p>Welcome, {{ Auth::user()->name }}!</p>
-                    <form method="POST" action="{{ url('/logout') }}">
-                        @csrf
-                        <button type="submit" class="button">Logout</button>
-                    </form>
+                    <div class="d-flex align-items-center">
+                        <span class="text-light me-3">Welcome, {{ Auth::user()->name }}!</span>
+                        <form method="POST" action="{{ url('/logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-light">Logout</button>
+                        </form>
+                    </div>
                 @else
-                    <a href="{{ url('/login') }}" class="button">Login</a>
-                    <a href="{{ url('/register') }}" class="button">Register</a>
+                    <div class="d-flex">
+                        <a href="{{ url('/login') }}" class="btn btn-outline-light me-2">Login</a>
+                        <a href="{{ url('/register') }}" class="btn btn-primary">Register</a>
+                    </div>
                 @endif
             </div>
         </div>
     </nav>
-    <main>
+    <main class="container mt-5">
         @yield('content')
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -141,7 +141,7 @@ class AuthenticationController extends Controller
             $user->save();
 
 
-            return redirect('/')->with('success', 'The excess amount has been added to your wallet.');
+            return redirect()->route('user.index')->with('success', 'The excess amount has been added to your wallet.');
         } else {
             // Redirect back to the payment form to correct the amount
             return redirect()->route('pay')->with('error', 'Please enter the correct payment amount.');

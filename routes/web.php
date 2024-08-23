@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\FriendRequestController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,4 +44,5 @@ Route::middleware(['auth', 'paid'])->group(function () {
     Route::resource('friend-request', FriendRequestController::class);
     Route::resource('friend', FriendController::class);
     Route::resource('message', MessageController::class);
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
