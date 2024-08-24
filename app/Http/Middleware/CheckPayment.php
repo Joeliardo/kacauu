@@ -21,6 +21,5 @@ class CheckPayment
         }
 
         return $next($request);
-        // return $next($request);
     }
 }

@@ -37,7 +37,7 @@ Route::post('/updatePaid', [AuthenticationController::class, 'update_paid'])->na
 
 Route::middleware(['auth', 'paid'])->group(function () {
     Route::get('/', function () {
-        return view('home');
+        return view('home.home');
     });
 
     Route::resource('user', UserController::class);

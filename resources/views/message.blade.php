@@ -7,6 +7,13 @@
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+
+    <div class="bg-light p-3 d-flex align-items-center shadow-sm mb-3" style="margin-top: -1.5rem;">
+        <img src="{{ asset($friend->profile_path) }}" alt="{{ $friend->name }}'s profile"
+             class="rounded-circle me-3" style="width: 50px; height: 50px;">
+        <h5 class="mb-0">{{ $friend->name }}</h5>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
@@ -35,7 +42,7 @@
                     @csrf
                     <div class="input-group">
                         <input type="text" name="new_message" class="form-control" placeholder="Enter your message"
-                            required>
+                               required>
                         <input type="hidden" name="friend_id" value="{{ $friend->id }}">
                         <button type="submit" class="btn btn-primary">Send</button>
                     </div>

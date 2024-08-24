@@ -11,43 +11,40 @@
 </head>
 
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('user.index') }}">Job Friend</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link @yield('activeHome')" href="{{ route('user.index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('activeRequest')" href="{{ route('friend-request.index') }}">Requests</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('activeFriend')" href="{{ route('friend.index') }}">Friends</a>
-                    </li>
-                </ul>
-                @if (Auth::check())
-                    <div class="d-flex align-items-center">
-                        <span class="text-light me-3">Welcome, {{ Auth::user()->name }}!</span>
-                        <form method="POST" action="{{ url('/logout') }}">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-light">Logout</button>
-                        </form>
+            <a class="navbar-brand" href="#">Hello, {{ Auth::user()->name }}</a>
+           
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link @yield('activeHome')" href="{{ route('user.index') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @yield('activeRequest')" href="{{ route('friend-request.index') }}">Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @yield('activeFriend')" href="{{ route('friend.index') }}">Friends</a>
+                </li>
+                
+            </ul>
+            <form method="GET" action="{{ route('user.index') }}" class="mb-4">
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" name="search" class="form-control" placeholder="Search by name"
+                            value="{{ request('search') }}">
                     </div>
-                @else
-                    <div class="d-flex">
-                        <a href="{{ url('/login') }}" class="btn btn-outline-light me-2">Login</a>
-                        <a href="{{ url('/register') }}" class="btn btn-primary">Register</a>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
                     </div>
-                @endif
-            </div>
+                </div>
+            </form>
+          </div>
         </div>
-    </nav>
+      </nav>
     <main class="container mt-5">
         @yield('content')
     </main>

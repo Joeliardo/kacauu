@@ -16,20 +16,16 @@ class UserController extends Controller
     {
         $currentUserID = Auth::user()->id;
 
-        // Get the search term from the request
         $searchTerm = $request->input('search');
 
-        // Subquery to get the list of users who have sent a request to the current user
         $sentRequestUserIDs = DB::table('friend_requests')
             ->where('sender_id', '=', $currentUserID)
             ->pluck('receiver_id');
 
-        // Subquery to get the list of users who are already friends with the current user
         $friendUserIDs = DB::table('friends')
             ->where('user_id', '=', $currentUserID)
             ->pluck('friend_id');
 
-        // Query to get users who have not sent a friend request to the current user
         $dataUser = User::whereNotIn('id', $sentRequestUserIDs)
             ->whereNotIn('id', $friendUserIDs)
             ->where('id', '!=', $currentUserID)
@@ -38,7 +34,7 @@ class UserController extends Controller
             })
             ->get();
 
-        return view('home', compact('dataUser'));
+        return view('home.home', compact('dataUser'));
     }
 
 

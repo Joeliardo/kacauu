@@ -4,11 +4,14 @@
 @section('activeHome', 'active')
 
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     <div class="container">
+        
         <h3>Notifications</h3>
         <div class="alert alert-info">
             <ul class="list-unstyled mb-0">
@@ -32,38 +35,43 @@
                 @endforelse
             </ul>
         </div>
-
-        <div class="row mt-4">
-            <!-- Search Form -->
-            <form method="GET" action="{{ route('user.index') }}" class="mb-4">
-                <div class="row">
-                    <div class="col-md-8">
-                        <input type="text" name="search" class="form-control" placeholder="Search by name"
-                            value="{{ request('search') }}">
-                    </div>
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary w-100">Search</button>
-                    </div>
-                </div>
-            </form>
-
+    </div>
+    <div class="container my-5">
+        <h1 class="display-4 text-center mb-4">Find Your Friends</h1>
+        
+        <div class="row row-cols-1 row-cols-md-2 g-4">
             @foreach ($dataUser as $user)
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <img src="{{ asset('storage/' . $user->profile_path) }}" alt="{{ $user->name }}'s profile"
-                            class="card-img-top img-fluid" style="object-fit: cover; height: 250px;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $user->name }}</h5>
-                            <p class="card-text">{{ $user->fields_of_work }}</p>
+            <div class="col">
+                <div class="card h-100 shadow-lg border-0">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <a href="/login">
+                                <img src="{{ asset($user->profile_path) }}" class="img-fluid rounded-start h-100" alt="User Image">
+                            </a>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $user->name }}</h5>
+                                <p class="card-text">{{ $user->hobby }}</p>
+                                <p class="card-text">
+                                    <small class="text-muted">Last updated 5 mins ago</small>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
                             <form method="POST" action="{{ route('friend-request.store') }}" class="mt-auto">
                                 @csrf
                                 <input type="hidden" name="receiver_id" value="{{ $user->id }}">
-                                <button type="submit" class="btn btn-primary w-100">Send Request</button>
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="bi bi-hand-thumbs-up"></i>
+                                </button>
                             </form>
+                        </div>
                         </div>
                     </div>
                 </div>
+            </div>
             @endforeach
+            
         </div>
     </div>
 @endsection

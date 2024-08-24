@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('gender', ['Male', 'Female']);
-            $table->string('fields_of_work')->nullable();
-            $table->string('linkedin_username')->nullable();
+            $table->string('hobby')->nullable();
+            $table->string('instagram_username')->nullable();
             $table->string('mobile_number');
             $table->integer('coins')->default(100);
             $table->string('profile_path')->nullable();
